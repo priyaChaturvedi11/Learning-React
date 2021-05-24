@@ -1,0 +1,38 @@
+MAY 13 - LIFECYCLE METHODS
+
+When we create a react component, it goes through several stages in lifecycle. React provides built-in methods and lets us override them at various stages of lifecycle to suit our purpose.
+
+These life-cycle methods do not exist on/for functional components so we're going to learn how to override lifecycle methods for class components. 
+
+Also, with the newly introduced concept of hooks, one can note that useAffect hook partially relates with lifecycle of a component (functional or class? class probably...)
+
+[DOUBT] Do functional components do not have a lifecycle of their own or is it the case that we cannot use/override built-in lifecycle methods for functional components?
+
+Overriding of lifecycle methods for class components works in react versions above 16.4
+
+There are basically four types of lifecycle stages:
+
+	1. MOUNTING - Comes into picture  when an instance of a component is being created and inserted into the DOM.
+	Here, we have four methods: 
+	- constructor
+	- static getDerivedStateFromProps
+	- render
+	- componentDidMount
+	
+	2. UPDATING - When a component is being re-rendered as a  result of changes to either its props or its state.
+	Here, we have five methods:
+	- static getDerivedStateFromProps
+	- shouldComponentUpdate
+	- render
+	- getSnapshotBeforeUpdate
+	- componentDidUpdate
+	
+	3. UNMOUNTING - When a component is being removed from the DOM.
+	Only one method at this sage
+	
+	4. ERROR HANDLING - When there is an error during rendering, in a lifecycle method, or in the constructor of any child component.
+	Two methods:
+	- static getDerivedStateFromError
+	- componentDidCatch
+	
+	

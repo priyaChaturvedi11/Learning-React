@@ -1,0 +1,191 @@
+MAY 13 - UPDATING LIFECYCLE METHODS
+
+Updating Phase:- When a class compoenent is re-rendered due to any changes in its or its parent's props and states.
+
+There are 5 methods, in order of invocation:-
+1. static getDerivedStateFromProps(props, state)
+2. shouldComponentUpdate(nextProps, nextState)
+3. render()
+4. getSnapshotBeforeUpdate(prevProps, prevState)
+5. componentDidUpdate(prevProps, prevState, snapshot)
+
+---- static getDerivedStateFromProps(props, state) ----
+- optional
+- is called whenever a component needs to be re-rendered because of change in props and states of its own or its parent's and the state of the component depends on props of the component 
+- is rarely used
+- can be used to set state 
+- do not cause side effects, or make changes to the dom tree
+
+---- shouldComponentUpdate(nextProps, nextState) -----
+- optional
+- rarely used
+- dicates if at all a component has to be re-rendered or not
+- by default all class components are re-rendered whenever the props that they receive or their state changes so using this method we can control that default behavior by retuning false
+- you can compare existing state and props value with nextState and nextProps and let react know whether a component should be updated or not
+- basically used for performance optimization 
+- should not be used to set state
+- return true or false
+- do not cause side effects
+
+----- render() -----
+- only required method
+- is called to read this.state and this.props and return JSX
+- do not cause side effects 
+- do not modify this.state or this.props
+
+----- getSnapshotBeforeUpdate(prevProps, prevState) -----
+- optional
+- rarely used
+- called right before the changes from the virtual DOM are to be reflected in the DOM
+- rarely used
+- can be used to capture some information from the DOM for example, you can note user's scroll position and after the update can keep it in the same position by doing some calculations
+- retuns a value which is passed further to componentDidUpdate() method or returns null
+
+----- componentDidUpdate(prevProps, prevState, snapshot) -----
+- optional
+- called after render is finished in the re-render cycle
+- is invoked immediately after the parent component and all its chhildren have been re-rendered 
+- gets snapshot parameter from getSnapshotBeforeUpdate()
+- is called only once in each re-render cycle so it can be used to cause side-effects
+- but before making ajax calls you should compare previous props with existing props and then decide whether ajax calls have to be made or not otherwise you'll be doing unenecessary work, unwanted requests
+
+
+-------------- example by code ---- -------
+
+// LifecycleA.js
+
+import React, { Component } from 'react'
+import LifecycleB from './LifecycleB'
+
+class LifecycleA extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             name: 'Bella'
+        }
+
+        console.log('Lifecycle A constructor')
+    }
+    
+    static getDerivedStateFromProps(props, state){
+        console.log('Lifecycle A getDerivedStateFromProps')
+        return null
+    }
+
+    componentDidMount(){
+        console.log('Lifecycle A componentDidMount')
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log('Lifecycle A shouldComponentUpdate')
+        return true
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState){
+        console.log('Lifecycle A getSnapshotBeforeUpdate')
+        return null
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+        console.log('Lifecycle AREYYY componentDidUpdate')
+    }
+
+    clickHandler = () => {
+        this.setState({
+            name: 'Hella'
+        })
+    }
+
+
+    render() {
+        console.log('Lifecycle A render')
+        return (
+            <div>
+                Lifecycle A 
+                {this.state.name}
+                <button onClick={this.clickHandler}>cLICK</button>
+                <LifecycleB />
+            </div>
+        )
+    }
+}
+
+export default LifecycleA
+
+
+// LifecycleB.js
+
+
+import React, { Component } from 'react'
+
+class LifecycleB extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             name: 'Bella'
+        }
+
+        console.log('Lifecycle B constructor')
+    }
+    
+    static getDerivedStateFromProps(props, state){
+        console.log('Lifecycle B getDerivedStateFromProps')
+        return null
+    }
+
+    componentDidMount(){
+        console.log('Lifecycle B componentDidMount')
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log('Lifecycle B shouldComponentUpdate')
+        return true
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState){
+        console.log('Lifecycle B getSnapshotBeforeUpdate')
+        return null
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+        console.log('Lifecycle B componentDidUpdate')
+    }
+
+
+    render() {
+        console.log('Lifecycle B render')
+        return (
+            <div>
+                Lifecycle B 
+                {this.state.name}
+            </div>
+        )
+    }
+}
+
+export default LifecycleB
+
+
+
+
+UNMOUNTING PHASE 
+
+- componentWillUnmount() 
+ -invoked immediatley before a component is unmounted and destroyed
+ - clean up  tasks can be performed in here: - cancellling any network requests, removing event handlers, cancelling any subscriptions and also invalidating timers
+ -  do not call the setState method because component is never re-rendered after it is unmounted
+ 
+ 
+ ERROR HANDLING PHASE
+ 
+ - static getDerivedStateFromError(error)
+ - componentDidCatch(error, info)
+ 
+ - called when there is an error either during rendering or in the constructor of any of the child component
+ - will be discussed in detail while explaining the concept error boundaries
+ 
+
+
+

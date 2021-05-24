@@ -1,0 +1,140 @@
+MAY 14 - ERROR BOUNDARY
+
+Error boundaries are React components that catch JavaScript error in their children and basically, in the whole DOM tree that's nested within them and logs the error.
+
+A class component that implements either one or both of the error handling phase lifecycle methods, getDerivedStateFromError and componentDidCatch, becomes an error boundary.
+
+Placement of error boundary matters because you have to decide if you want the whole app to have a fallback UI or just some nested component that has caused the error. Suppose for an e-commerce website you have to display various products. So there are two possible approaches:
+
+Approach 1:
+
+<ErrorBoundary>
+	<Product prodName='One'>
+	<Product prodName='Two'>
+	<Product prodName='Three'>
+</ErrorBoundary>
+
+Approach 2:
+
+<ErrorBoundary>
+	<Product prodName='One'>
+</ErrorBoundary>
+
+<ErrorBoundary>
+	<Product prodName='Two'>
+</ErrorBoundary>
+
+<ErrorBoundary>
+	<Product prodName='Three'>
+</ErrorBoundary>
+
+Now suppose if product Three throws error, with approach 1 whole app will have a falllback UI so no product will be rendered. With approach 2, however, only the error causing product, that is, product three, will have a fallback UI method.
+
+In development phase, because of REact team's intention to make errors as visible as possible, the error page will still be shown even after using error boundary, though closing it will allow us to have a look at the fallback UI as well. But in production phase, these will not be shown.
+
+Error boundaries can catch only the errors thrown by render method or the constructor of the whole commponent DOM tree. It cannot catch errors thrown by the event handlers, for them we can use normal try catch blocks.
+
+
+
+Use getDerivedStateFromError to render a fallback UI and componentDidCatch to log error to your logging facility
+
+
+
+
+
+CODE EXAMPLE
+------------
+
+// App.js
+
+import './App.css';
+import Hero from './components/Hero' 
+import ErrorBoundary from './components/ErrorBoundary';
+
+function App() {
+  let arr = ['Joecarr', 'Ray', 'Clown']
+
+  return (
+    <div className="App">
+      {/* <ErrorBoundary>
+        <Hero heroName='Joecarr'/>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Hero heroName='Boecarr'/>
+      </ErrorBoundary> */}
+      {
+        arr.map((hero, index, names) => 
+          <ErrorBoundary>
+            <Hero heroName={hero} />
+          </ErrorBoundary>
+        )
+      }
+    </div>
+  );
+}
+
+export default App;
+
+
+// Hero.js
+
+import React from 'react'
+
+function Hero({heroName}) {
+    if(heroName !== 'Joecarr'){
+        throw new Error('Not a hero')
+    }
+    return (
+        <h1>JoeCarr</h1>
+    )
+}
+
+export default Hero
+
+
+// ErrorBoundary.js
+
+import React, { Component } from 'react'
+
+export class ErrorBoundary extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             hasError: false
+        }
+    }
+    
+    // remember to declare it has a static method
+    // otherwise it will be considered an instance method 
+    // and will be ignored
+
+    // do not modify state rather return a new object
+    // rreflecting the new state. Why so? Because it is
+    // a static method and thus has no access to
+    // 'this' keyword.
+    static getDerivedStateFromError(){
+       return{
+        hasError: true
+       }
+    }
+
+    componentDidCatch(error, logs){
+        console.log(error)
+        console.log(logs)
+    }
+
+    render() {
+        if(this.state.hasError){
+            return (
+                <h1>Something went wrong</h1>
+            )
+        }else{
+            /// below refers to the children of error boundary
+            return  this.props.children
+        }
+    }
+}
+
+export default ErrorBoundary
+

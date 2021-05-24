@@ -1,0 +1,95 @@
+MAY 11 - LISTS AND KEYS
+
+------
+Warning that was given
+------
+Each child in an array or iterator should have a unique 'key' prop
+- i.e. a prop 'key'
+- and value of that key should be unique within the list for every child
+
+const personList = persons.map(person => <Person key={person.skill} personProp={person}/>)
+
+
+key can be anything unique
+
+and key prop are not accessible within the child component
+
+because key will not be a prop in the child component
+to access it within child component, pass it separately as a different prop, key prop is reserved.
+
+
+------
+NEED
+------
+Keys help React in knowing what list components have been updated, removed, added and plays a crucial role in handling UI updates efficiently.
+
+------
+HOW
+------
+
+/******** List without key attribute *******/
+
+consider list L1 = <ul>
+			<li>A</li>
+			<li>B</li>
+		   </ul>
+Now if I want to update L1 and add one more item at the bottom, let it be <li>C</li> as follows
+
+ L1 = <ul>
+	<li>A</li>
+	<li>B</li>
+	<li>C</li>
+      </ul>
+
+then react will compare the two lists, for every item, if found different, generates a mutation and instead of rendering the DOM tree again and doing everything from scratch, goes at the bottom of the list L1 child of the DOM tree and adds new item.
+Saves time and effort, right?
+But not in all the cases of updation.
+
+For example, if I want to add an item at the top of the list.
+
+<ul>
+	<li>Bruce</li>
+	<li>Charles</li>
+</ul>
+
+<ul>
+	<li>Diana</li>
+	<li>Bruce</li>
+	<li>Charles</li>
+</ul>
+
+Now when react compares two lists, it founds each element:
+Bruce - Diana
+Charles - Bruce
+End of list - Charles
+to be different
+
+and builds the list from scratch without realizing that it coulld have saved upon time and effort by just extracting that one different list item and adding it at the top of the list child of the DOM tree
+
+
+/******** List with key attribute *******/
+
+consider list L1 = <ul>
+			<li key=1>A</li>
+			<li key=2>B</li>
+		   </ul>
+Now if I want to update L1 and add one more item at the bottom, let it be <li>C</li> as follows
+
+ L1 = <ul>
+	<li key=3>C</li>
+	<li key=1>A</li>
+	<li key=2>B</li>
+      </ul>
+
+Now with the help of key attribute, react will just iterate over the key attributes and for all the different key values it'll find, it will put it at the desired place in the DOM tree, instead of doing everything from scratch dumbly.
+
+
+------
+USES OF KEYS
+------
+
+1. A "key" is a special string attribute (can it never be an int or float value? What if I asign it one? Will it be type casted to string?) we need to include when creating list of elements.
+2. Keys give the elements a stable identity.
+3. Keys help React identify which items have changed, are added or are removed.
+4. Help in efficient update of user interface.
+ 

@@ -1,0 +1,84 @@
+May 7, 2021
+
+Binding Event Handlers@CodeEvolution
+--------
+
+this keyword functioning is reason why we need to bind event handlers
+Whhy this is undefined in an event handler in case of JS?
+Reason: idk
+Solution: This is why we need to bind event handlers in react
+Ways of binding event handlers in react:-
+1. use 'bind' keyword 
+ - Inside clickHandler()
+   clickHandler(){
+   	// otherwise setState won't work without binding event handler
+   	// because in that case this would be undefined
+   	this.setState({
+   		message: "Goodbye"
+   	})
+   	// console.log(this)
+   }
+ - <button onClick={this.clickHandler.bind(this)}>Click</button>
+ - CON of this method:
+ 	- every update to state will cause component to re-render
+ 	- trouble some in large application or component with nested children
+ 	
+ 2. Arrow function approach
+ - <button onClick={() => this.clickHandler()}>Click</button>
+ - Performance:
+ 	- ???
+ 	
+ 3. (most used/in official doc)Binding event handler in constructor instead of render method
+ constructor(props) {
+	super(props)
+	
+	this.state = {
+		message: 'Hello'
+	}
+	
+	this.clickHandler = this.clickHandler.bind(this)	
+}
+
+clickHandler() {
+	this.setState({
+		message: 'Goodbye'
+	})
+}
+
+render() {
+	return (
+		<div>
+			<div>{this.state.message}</div>
+			<button onClick={this.clickHandler}>Click Me!</button>
+		</div>
+	)
+}
+
+ - Performance
+ 	- binding happens only once in the constructor method so performance is better
+ 	
+4. Use arrow function as a class property
+ - Basically, change the way you defined method clickHandler() in the class
+ constructor(props) {
+	super(props)
+	
+	this.state = {
+		message: 'Hello'
+	}
+}
+
+ clickHandler = () => {
+ 	this.setState{
+ 		message: 'Gooodbye'
+ 	}
+ }
+ render() {
+	return (
+		<div>
+			<div>{this.state.message}</div>
+			<button onClick={this.clickHandler}>Click Me!</button>
+		</div>
+	)
+}
+
+ everything else remains same

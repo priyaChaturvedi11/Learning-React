@@ -1,0 +1,90 @@
+MAY 10 - LIST RENDERING
+
+	------
+	Goal
+	------
+to display a list of items, you want tto repeat some html for each item
+
+	------
+	map() method - what?
+	------
+- map() to qickly iterate through an array and return an array with desired changes applied
+
+	------
+	map() summary:
+	------
+- Array.prototype.map()
+- map() method creates a new array with the results of calling a provided function on every element in the calling array
+- e.g.
+var arr = [1,2,3,4]
+const map1 = arr.map(x => x*x) // here argument is an arrow function
+console.log(map1)
+
+	------
+	Case: You have a list of objects with few properties that have to be rendered. In that case, refactor jsx into a separate component and then use that component in map() method jsx.
+	------
+
+	/**** without refactoring *********/
+
+import React from 'react'
+
+function NameList() {
+    const persons = [
+        {
+            name: 'Bella',
+            id: 2,
+            skill: 'React'
+        },
+        {
+            name: 'Joe',
+            id: 5,
+            skill: 'Vue'
+        },
+        {
+            name: 'Ray',
+            id: 8,
+            skill: 'Angular'
+        }
+
+    ]
+      const personList = persons.map(person => <h2>I am {person.name}. My id is {person.id}. I know {person.skill}.</h2>)
+	return <div>{personList}</div>
+}
+
+export default NameList
+
+
+	/********** with refactoring ***********/
+
+
+const personList = persons.map(person => <Person personProp={person}/>)
+
+and in Person.js -- which is our refactored jsx component
+
+import React from 'react'
+// destructuring prop in the parameter
+function Person({personProp}) {
+    return (
+        <div>
+            <h2>I have an id: {personProp.id} and I know {personProp.skill}</h2>
+        </div>
+    )
+}
+
+export default Person
+
+	------
+	Reflecting Back On What I have learnt:
+	------
+
+- If suppose I need to display a menu.
+- I can put all the items in a list 
+- can use map method to display same html for each menu item
+
+- similarly, list rendering can be used for - let's say - social cards if any
+and then socialCards will be a consolidated div that I'll be returning
+
+	------
+	Note
+	------
+Though this approach gives a warning that every LIst item should have a unique 'key' prop

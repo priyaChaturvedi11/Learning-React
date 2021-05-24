@@ -1,0 +1,23 @@
+May 8 - Methods as props 
+
+- Parent component can pass down props to its children component as it is available for them
+- For reverse, - props - by passing refernce to a method as props to a child component
+
+- when you don't need a state in a component, use a simpler approach - use function component instead of class component
+(shortcut rfce)
+
+ChildComponent
+clicking on button - we want to execute method defined in Parent component - pass itself as props to child component
+
+for passing parameter to prop attribute you should use arrow functionn syntax for passing prop
+// Inside child component
+           {/*<button onClick={props.greetHandlerAttr}>Greet Parent</button>*/}
+            <button onClick={() => props.greetHandlerAttr('child one')}>Greet Parent</button>
+
+
+Steps broadly are:
+1. make a parent component - gonna be a class since we need to store state
+2. define a method for handling event in parent component
+3. bind the event handler in parent's constructor
+4. pass the method as prop to child component (child means it is in jsx of parent and parent could be in jsx of some grand parent) 
+5. use the method or atttribute in child component while registering with event source and if you need to passs parameters to method, use arrow function syntax as shown above

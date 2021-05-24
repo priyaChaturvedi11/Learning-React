@@ -1,0 +1,51 @@
+MAY 22 - CONTEXT PART 2
+
+USING CONTEXT API
+-----------------
+Check out CtCompC, CtCompE, CtCompF, userContext.js
+-----------------
+
+3 Necessary Steps to Be Performed In Order To Use Context:
+	1. Create the Context
+	2. Provide a context value
+	3. Consume the context value
+	
+---------
+
+First step is to create the context. This is ideally done in a separate file using React's createContext() method.
+
+const UserContext = React.createContext()
+
+In the subsequent steps we need to provide this context and then consume it as well, this is done through extracting Provider and Consumer from UserContext.
+
+const UserProvider = UserContext.Provider
+const UserConsumer = UserContext.Consumer
+
+export UserProvider , UserConsumer
+
+-----------
+
+Second step is to Provide the context. The place should be chosen wisely so that it can be consumed by the required component. For example, if we need to consume the context in Component F, which is in the following hierarchy App->C->E->F
+
+Then App is probably the best place to provide it and wrap the component C in-between UserProvider because that way any component that's nested at any level withiin C will be able to consume it.
+
+How to pass the value of context?? Using value attribute in the Provider.
+
+E.g. <UserProvider value="someNameValue">
+	<CtCompC />
+     <UserProvider />
+     
+     
+Now for consuming it in the component F, we just have to wrap a function inside Context Consumer that we created earlier. This function will take as parameter the context value and will use  the same for some rendering logic or will just display it as is.
+
+render(){
+	return (
+		<UserConsumer>
+			{
+				username => {
+					<h1>Hello {username}!</h1>
+				}
+			}
+		<UserConsumer />
+	)
+}

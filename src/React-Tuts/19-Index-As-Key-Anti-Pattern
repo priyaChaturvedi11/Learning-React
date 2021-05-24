@@ -1,0 +1,87 @@
+MAY 11 -  INDEX AS KEY ANTI-PATTERN
+
+------
+GOAL
+------
+Using index of item as key when rendering lists and other collections
+
+------
+CODE EXAMPLE
+------
+
+import React from 'react'
+import Person from './Person'
+
+
+function NameList() {
+    const names = ['Bella', 'Joe', 'Ray', 'Bella']
+    const nameList = names.map((name, index) => <h2 key={index}>
+                                                    {index} {name}
+                                                </h2>) 
+ return  <div>{nameList}</div>
+}
+
+export default NameList
+
+
+-------
+NOTE
+-------
+But using index as key for lists, can have serious UI implications in certain scenarios.
+
+How react interprets the update?
+
+So when I'm using index value as key for my list items, and when do an update.
+
+Let following be initial ist
+
+<ul>
+ <li key="0">1</li>
+ <li key="1">2</li>
+ <li key="2">3</li>
+</ul>
+
+And now if I want to add another iteam at the start of the list
+
+React generates following
+
+<ul>
+ <li key="0"></li>
+ <li key="1"></li>
+ <li key="2"></li>
+ <li key="3"></li>
+</ul>
+
+Then it sees, oh! I already have values for three of the keys in my initial list and uses them in the new list as well, resulting in following:
+
+(i had v=1 for k=0, v=2 for k=1, v=3 for k=2)
+
+<ul>
+ <li key="0">1</li>
+ <li key="1">2</li>
+ <li key="2">3</li>
+ <li key="3"></li>
+</ul>
+
+But this was not what I expected it to do.
+
+Same happens when I want to sort my list.
+Ids will be sorted and list values will be mapped not as per sorted ids but as per index which would still remain the same.
+
+Therefore, using index as key attribute for our list should be our last resort.
+
+------
+WHEN TO USE INDEX AS A KEY?
+------
+
+1. When the items in your list do not have a unique id.
+2. When the list is a static list and you know it won't change whatsoever.
+3. The list will never be reordered or filtered.
+
+
+Mostly, we'd end up having a unique value in our list items which could be used as keys. Or we can use npm packages for the same purpose. We can also use hash value of some unique field.
+
+
+Infact, when we don't provide any key attribute, react uses index values as key which could be disastrous in certain scenrios.
+
+

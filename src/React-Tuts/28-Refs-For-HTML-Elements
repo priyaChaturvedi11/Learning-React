@@ -1,0 +1,120 @@
+MAY 14 - REFS
+
+CONCEPT
+-------
+Refs help us to directly access a DOM node
+There are two ways of using refs:
+1. using React.createRef()
+2. using callback refs (considerably older practice)
+
+Use Case:
+--------
+Suppose we have a login page and as soon as user opens this page we want the username input field to gain focus
+
+Now to do this, there will be 3 steps:
+1. Create our own ref using React.createRef() method
+   this.myInputRef = React.createRef()
+   This is commonly done inside the constructor so that this ref which has been declared as a class property is directly accessible within the component
+2. Register this ref with the input field with the help of reserved 'ref' attribute
+   <input type='text' ref={this.myInputRef}/>
+3. Call focus method on this ref which actually returns an object with current field
+   componentDidMount(){
+   	this.myInputRef.current.focus()
+   }
+   
+   
+Code Example
+------------
+
+import React, { Component } from 'react'
+
+class RefsDemo extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.myInputRef = React.createRef()
+    }
+    
+    componentDidMount(){
+        this.myInputRef.current.focus()
+    }
+
+    handleClick = (element) => {
+        element = this.myInputRef.current.value
+        alert(element)
+    }
+
+    render() {
+        return (
+            <div>
+                Refs Demo
+                <br />
+                <input type="text" ref={this.myInputRef}/>
+                <br />
+                <button onClick={this.handleClick}>Click Me</button>
+            </div>
+        )
+    }
+}
+
+export default RefsDemo
+
+   
+   
+   
+Using callback refs
+-------------------
+
+
+import React, { Component } from 'react'
+
+class RefsDemo extends Component {
+    constructor(props) {
+        super(props)
+STEP 1        this.cbRef = null // a class property
+        // below method will assign a dom element to the 
+        // callback ref that we just created
+STEP 2
+        this.setCbRef = (element) => {
+            this.cbRef = element
+        }
+        this.myInputRef = React.createRef()
+    }
+    
+    componentDidMount(){
+        // this.myInputRef.current.focus()
+        /*
+            About callback refs:
+            React will call the callback ref with dom element
+            when the component mounts
+            and will call it with null when component unmounts
+            so you should check if the 
+            callback ref property has dom elemennt or has null
+        */
+STEP 4        if(this.cbRef){
+            this.cbRef.focus()
+        }
+    }
+
+    handleClick = (element) => {
+        element = this.myInputRef.current.value
+        alert(element)
+    }
+
+    render() {
+        return (
+            <div>
+                Refs Demo
+                <br />
+                <input type="text" ref={this.myInputRef}/>
+                <br />
+STEP 3                <input type="text" ref={this.setCbRef}/>
+                <br />
+                <button onClick={this.handleClick}>Click Me</button>
+            </div>
+        )
+    }
+}
+
+export default RefsDemo
+

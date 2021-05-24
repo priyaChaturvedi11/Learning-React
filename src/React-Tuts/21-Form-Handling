@@ -1,0 +1,37 @@
+MAY 11- FORM HANDLING
+
+------
+GOAL
+------
+Input in forms
+In regular html, form elements are themself responsible for taking user input and update their respective values.
+We want react to control elements of a form. Such form elements whose value is controlled by react are called 'controlled components'.
+
+E.g, consider the text input field
+
+<input type='text' value='' onChange='' />
+
+Dealing with values that can change within a component:-
+	Make use of state
+	this.state = {
+		email: ''
+	}
+	// In a controlled component, value of field is set to the state property.
+	<input type='text' value={this.state.email} onChange={this.changeEmailHandler} />
+	
+	And setState
+	this.changeEmailHandler = (event) => {
+		this.setState({email: event.target.value})
+	}
+	
+	
+NOTE: FOR BETTER USER EXPERIENCE
+
+When you use type="submit" on a button it allows user to submit the form by just pressing the enter key.
+MIght be good for your case, might not be
+
+If something very critical is being entered and user mistakenly presses enter key, all her progress will be lost
+
+but think about choosing a color to generate a new pallete, user might want pressing of enter key to submit the form
+
+

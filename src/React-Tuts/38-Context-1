@@ -1,0 +1,27 @@
+MAY 21 - CONTEXT PART 1
+
+WHY NEEDED?
+-----------
+
+We generally have hierarchy of components and sometimes we need to pass down props from parent to children components.
+This is often cumbersome when the child is way down the hierarchy and thus props have to be passed to all the children in the path.
+
+		A (username)
+	 /	|     \
+        D	B     C
+        |      |      |
+        M      F      G
+                      |
+                      H
+                      |
+                      E
+                      
+In the above hierarchy, suppose E needs the prop username that will be passed by the parent A. For that, we will need to pass it down to C, then G, then H, then finally, to E. And this adds a lot of complexity.
+
+So Context comes handy while handling such complexity issues.
+
+In short, we can say, Context help us in passing down props directly to child component without passing it to all the children components in levels in between.
+
+
+"Context provides a way to pass data through the component tree without having to pass props down manually at every level."
+

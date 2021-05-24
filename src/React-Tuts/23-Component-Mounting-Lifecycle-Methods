@@ -1,0 +1,128 @@
+MAY 13 - COMPONENT MOUNTING LIFECYCLE METHODS
+
+Mounting Phase: When an instance of a component is being created or is being inserted in the DOM.
+
+Order of invocation is: 
+
+1. constructor(props)
+2. static getDerivedStateFromProp(props, state)
+3. render()
+4. componentDidMount()
+
+---- constructor(props) method ----
+- optional to have
+- a special function that will get called whenever a new component is created
+- can be used to initalize state when an instance is being created
+- takes props as necessary parameter
+- we'll have to call super() and pass props to it like super(props) in order to call parent class's constructor and get access to this.props
+- this.state can be used initialize state
+- canbe used to bind event handlers to the class instance
+- DO NOT cause side-effects while calling constructor, i.e., do not make HTTP requests or make spi calls to fetch data from within connstructor
+- constructor is the only place wherein we are alllowed to set the state by overwriting this.state directly
+
+---- static getDerivedStateFromProps(props, state) ----
+- optional
+- seldom used
+- is called when the state of the component depends on change in the props of the component being passed
+- basically used to SET STATE
+- static so you cannot use this keyword, inside this method - so we cannot call this.setState() inside this method
+- rather just return an object that represents new state of component or return null
+- if static keyword is not used as prefix then method will be ignored
+- DO NOT cause side-effects - such as fettching data from an end-point
+
+---- render() ----
+- only required method in the mounting phase
+- used to read values of this.props and this.state and return JSX which defines UI
+- render() method is a pure function which renders same UI for same set of this.state and this.props
+- can be used to call child components jsx as well
+- all the lifecycle methods of all the children of the parent component are called right after the render() method of the parent component
+- DO NOT change state or interact with DOM or make ajax calls
+
+---- componentDidMount() -----
+- optional
+- called only once in the whole lifecycle of a component
+- invoked immediately after a component and all its children components have been renederd to the DOM
+- perfect place to cause side-efffects, e.g. interact with the DOM or perform any ajax calls to load data
+
+
+----- EXAMPLE -------
+
+
+import React, { Component } from 'react'
+
+class LifecycleA extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             name: 'Bella'
+        }
+
+        console.log('Lifecycle A constructor')
+    }
+    
+    static getDerivedStateFromProps(props, state){
+        console.log('Lifecycle A getDerivedStateFromProps')
+        return null
+    }
+
+    componentDidMount(){
+        console.log('Lifecycle A componentDidMount')
+    }
+
+    render() {
+        console.log('Lifecycle A render')
+        return (
+            <div>
+                Lifecycle A 
+                {this.state.name}
+            </div>
+        )
+    }
+}
+
+export default LifecycleA
+
+
+----- EXAMPLE TO DEMONSTRATE FUNCTIONING OF CHILD METHODS -----
+
+// LifecycleB.js
+
+
+import React, { Component } from 'react'
+import LifecycleB from './LifecycleB'
+
+class LifecycleA extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             name: 'Bella'
+        }
+
+        console.log('Lifecycle A constructor')
+    }
+    
+    static getDerivedStateFromProps(props, state){
+        console.log('Lifecycle A getDerivedStateFromProps')
+        return null
+    }
+
+    componentDidMount(){
+        console.log('Lifecycle A componentDidMount')
+    }
+
+    render() {
+        console.log('Lifecycle A render')
+        return (
+            <div>
+                Lifecycle A 
+                {this.state.name}
+                <LifecycleB />
+            </div>
+        )
+    }
+}
+
+export default LifecycleA
+

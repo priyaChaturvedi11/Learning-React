@@ -1,0 +1,23 @@
+MAY 21 - RENDER PROPS PART 2
+
+WHAT ARE RENDER PROPS?
+----------------------
+
+- We are aware of the concept of passing props to components. These, so far, have been simple props as in just integers, strings etc. 
+
+But react also allows us to pass props which have a function as their value. This function can be parameterized or non-parameterized.
+
+How this helps us in re-using code?
+
+Because we are passing parameter, on the basis of those parameters we can perform conditional rendering.
+
+PLus, we can pass props specific to child components which are trying to use the same code that has been implemented in the functionality. So such props will share different instances of same parent,, hence exhibiting code-reusability.
+
+Read both the examples here:
+https://scotch.io/tutorials/react-render-props-explained
+
+Concerned Files:
+
+- Counter.js
+- ClickCounterTwo.js
+- HoverCounterTwo.js

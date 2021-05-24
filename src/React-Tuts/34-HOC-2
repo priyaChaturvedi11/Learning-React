@@ -1,0 +1,160 @@
+MAY 15- HOC PART 2 - WHAT ARE HOCs?
+
+NEED - to share common functionality between components
+
+WHAT IS IT?
+----------
+
+They are functions which provide the functionality of taking as argument the originalComponent, adding some features/data to it, and returning the enhanced component.
+
+Something like this:
+
+const EnhancedComponent = higherOrderComponent(OriginalComponent)
+
+or:
+
+const IronMan = withSuit(TonyStark)
+
+Naming convention that we should follow:
+
+1. use came case for HOC -> withAFunctionality
+
+2. use pascal case for new component and give it same name as HOC - WithAFunctionality
+
+3. use pascal case for original component and name it wrapped component - WrappedComponent
+
+4. In the child component, export it with the HOC as  -
+export default withAFunctionality(SomeComponent)
+
+
+STEPS:
+BASIC HOC 
+1. make withCounter.js
+	import React from 'react'
+	
+	const UPdatedComponent = (OriginalCOmponent) => {
+		class NewComponent extends Component{
+		render(){
+			return 
+			<OriginalComponent name='SOmeName' />
+		}
+		return NewComponent
+	}
+	
+	export default UPdatedCOmponent
+	
+	
+	
+CODE EXAMPLE
+------------
+
+// withIncrement.js
+
+import React, { Component } from 'react'
+
+const withIncrement = (WrappedComponent) => {
+    class WithIncrement extends Component {
+
+        constructor(props) {
+            super(props)
+        
+            this.state = {
+                 count: 0
+            }
+        }
+        
+        incrementCount = () => {
+            this.setState( prevState => {
+                return {
+                    count: prevState.count + 1
+                }
+            })
+        }
+        
+
+            render() {
+                return (                
+                    <WrappedComponent 
+                    count={this.state.count} 
+                    incrementCount={this.incrementCount}/>
+                )
+            }
+        }
+        return WithIncrement
+}
+
+export default withIncrement
+
+
+
+
+// HOverIncrement.js
+
+import React, { Component } from 'react'
+import withIncrement from './withIncrement'
+
+export class HoverIncrement extends Component {
+
+    render() {
+        // const {count} = this.state
+
+        // const count = this.state.count , is also valid but more verbose
+        // used approach just extracts that key of the object as the one within braces
+        return (
+            <div>
+                <h1 onMouseOver={this.props.incrementCount}>
+                     Hovered {this.props.count} times
+                </h1>
+            </div>
+        )
+    }
+}
+
+export default withIncrement(HoverIncrement)
+
+
+
+
+
+// ClickIncrement.js
+
+import React, { Component } from 'react'
+import withIncrement from './withIncrement'
+
+class ClickIncrement extends Component {
+
+
+    render() {
+        // const count = this.state.count
+        return (
+            <div>
+              <button onClick={this.props.incrementCount}>
+                  Clicked {this.props.count} times
+              </button>  
+            </div>
+        )
+    }
+}
+
+export default withIncrement(ClickIncrement)
+
+
+// App.js
+
+
+import './App.css';
+import ClickIncrement from './components/ClickIncrement';
+import HoverIncrement from './components/HoverIncrement';
+
+function App() {
+  return (
+    <div className="App">
+      <ClickIncrement/>
+      <HoverIncrement/>
+
+    </div>
+  );
+}
+
+export default App;
+

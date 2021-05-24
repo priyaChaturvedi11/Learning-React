@@ -1,0 +1,115 @@
+MAY 11 - STYLING AND CSS BASICS
+
+-----
+Options
+-----
+
+1. CSS Stylesheets
+2. Inline styling
+3. CSS Modules
+4. CSS in JS libraries (recommended one - 'Styled Components')
+
+-----
+USING REGULAR CSS STYLESHEETS
+-----
+
+// assign multimple classes using template literals
+
+import React from 'react'
+import './myStyles.css'
+
+function Stylesheet(props) {
+    let className = props.primary ? 'primary' : ''
+
+    return (
+        <div>
+            <h1 className={`${className} font-xl`}>Stylesheet</h1>
+        </div>
+    )
+}
+
+export default Stylesheet
+
+-----
+USING INLINE STYLING
+-----
+
+
+In React, inline styles are not specified as strings.
+Instead, they are specified using objects.
+Keys of these objects are camelCase version of stylename. And value is a string value whatever you want to specify.
+
+-----
+USING CSS MODULES
+-----
+
+Available with react scripts version 2 or higher
+File name convention with css modules to be used with create-react-app: 'file name must be suffixed with .module.css'
+
+import './App.css';
+import Inline from './components/Inline'
+import './appStyles.css'
+import styles from './appStyles.module.css'
+
+function App() {
+  return (
+    <div className="App">
+      <h1 className='error'> Errror</h1>
+      {/* <h1 className='success'>success</h1> */}
+      <h1 className={styles.success}>success</h1>
+      {/* <Inline /> */}
+    </div>
+  );
+}
+
+export default App;
+
+appStyles.css
+
+.error{
+    color: red
+}
+
+appStyles.module.css
+
+.success{
+    color: green
+}
+
+One advantage of using CSS modules, classes are locally scoped by default. What does that mean?
+
+When we use regular css stylesheets, CSS kind of applies to all the child components as well.  So if parent is importing some css modules with classes, say x, y, z. And one of child components of this parent uses one of these classes x, y, z. It will apply style to them as well. 
+This might lead to CSS conflicts.
+
+However, using CSS modules we can keep the css classes locally scoped. Because we use them in parent component using 'styles' variable and it cannot be refernced in child component unless passed as props.
+
+
+import React from 'react'
+
+// why rem, em do not work here while px, vh, vw do??
+
+const heading = {
+    fontSize: '72px',
+    color: 'blue',
+    display: 'block'
+}
+
+function Inline() {
+    return (
+        <div>
+            <h1 className='error'> Errror</h1> // works
+            <h1 className={styles.success}> Success</h1> // doesn't work
+            <h1 style={heading}>Inline</h1>
+        </div>        
+    )
+}
+
+export default Inline
+
+
+
+
+
+
+
+

@@ -1,0 +1,118 @@
+MAY 13 - FRAGMENTS
+
+- comes in the advance section but most easy among them
+
+- helps in grouping a list of child elements (and not components but I guess compoents can be grouped too as they are jsx only at the end) without adding any extra node to the dom tree
+
+- for example if I had to return an h1 tag as well as an p tag, I can't do that without nesting them under a parent div tag
+
+not right- 
+	return(
+		<h1>heading</h1>
+		<p>para</p>
+	)
+right - 
+	return(
+		<div>
+			<h1>heading</h1>
+			<p>para</p>
+		</div>
+	)
+	
+but this way performance decreases as an extra div tag is being inserted unneceassarily
+so we can make use of fragments by following any of the below two syntax:-
+1. 	return(
+		<React.Fragment>
+			<h1>heading</h1>
+			<p>para</p>
+		</React.Fragment>
+	)
+2.	return(
+		<>
+			<h1>heading</h1>
+			<p>para</p>
+		</>
+	)
+	
+ANother very good example will be when we have table tag in parent component
+
+<table>
+	<tbody>
+		<tr>
+			<ColumnChild />
+		</tr>
+	</tbody>
+</table>
+
+And our child component has to return list of elements and not just a single element
+
+return(
+	<div>
+		<td>head</td>
+		<td>brain</td>
+	</div>
+)
+
+this will not show any error but there'd be a warning cuz a td element cannot be child of a div tag
+ so here we can use react fragment
+ 
+ return(
+	<React.Fragment>
+		<td>head</td>
+		<td>brain</td>
+	</React.Fragment>
+)
+
+Also, we can pass key to these fragments
+
+const item = []
+
+<React.Fragment key='someValue'>
+
+
+</React.Fragment>
+
+Why would I want to give a fragment a key? 
+- it allows fragments to be passed as items in arrays which in turn makes it possible to splice elements into text - and all without introducing any unecessary markup
+
+
+Example, use react fragments to render the newline characters in the below string as <br> tags, without using any extra markup
+
+let message = `
+	Hello!
+	THere!
+	Bella!
+`
+
+let messageWithBreaks  = message
+
+ReactDom.render(
+	return(
+		<div>
+			{messageWithBreaks}
+		</div>
+	)
+)
+
+we can do messageWithBreaks = 
+	message.split('\n').map((line, index, lines) => 
+		<React.Fragment key={index}>
+			{line}
+			{index !== lines.length-1 && <br />}
+		</React.Fragment>
+	) 
+	
+	
+Explanation: 
+1. splice the message on the basis of newline character
+2. you'll get an array
+3. use map method on that array
+4. we'll use a callback function inside the map method
+5. this arrow function takes in 3 params: 
+	1. line - items in the array
+	2. index - of the array item
+	3. lines - how many items are there in the array
+6. for each of the line in the item array, 
+	make a fragment, pass index as the key to the Fragment
+	add the item's value at that index
+	check if this is not the last item in the array, evaluate '<br />' so that a breakline gets rendered as the UI

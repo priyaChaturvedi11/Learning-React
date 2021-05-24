@@ -1,0 +1,129 @@
+MAY 24 - HTTP POST
+
+Refer to PostForm.js
+
+Similar to the way, get() verb was used post() can be used to submit/send data, say for submitting form data.
+
+Step 1: Make form fields
+
+render() {
+        return (
+            <div>
+                <input type="text" name="userid" value=""/>
+                <input type="text" name="password" value=""/>
+                <input type="text" name="contact" value=""/>
+            </div>
+        )
+    }
+    
+Step 2: Since, we need to update state use constructor and state property
+
+constructor(props) {
+        super(props)
+    
+        this.state = {
+         userid: '',
+         password: '',
+         contact: ''    
+        }
+    }
+    
+Step 3: destructure state
+
+const { userid, password, contact } = this.state
+return (
+            <div>
+                <input type="text" name="userid" value={userid}/>
+                <input type="password" name="password" value={password}/>
+                <input type="text" name="contact" value={contact}/>
+            </div>
+        )
+        
+Step 4: add onChange handler to all the input fields
+
+ onChangeHandler = () => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+     
+    render() {
+        const { userid, password, contact } = this.state
+        return (
+            <div>
+                <form onSubmit="">
+                    <input type="text" name="userid" value={userid} onChange={this.onChangeHandler}/>
+                    <input type="password" name="password" value={password} onChange={this.onChangeHandler}/>
+                    <input type="text" name="contact" value={contact} onChange={this.onChangeHandler}/>
+                </form>
+            </div>
+        )
+    }
+}
+
+Step 5: Add submit button and add onSubmitHandler
+
+ submitHandler = (e) => {
+        //to prevent page refresh
+        e.preventDefault()
+        console.log(this.state)
+    }
+     
+    render() {
+        const { userid, password, contact } = this.state
+        return (
+            <div>
+                <form onSubmit={this.submitHandler}>
+                    <input type="text" name="userid" value={userid} onChange={this.onChangeHandler}/>
+                    <input type="password" name="password" value={password} onChange={this.onChangeHandler}/>
+                    <input type="text" name="contact" value={contact} onChange={this.onChangeHandler}/>
+                    <button type="submit">Submit</button>
+                </form>
+                
+            </div>
+        )
+    }
+ 
+ 
+ 
+ ----------------------------------------
+ 
+ NOW using post request
+
+ componentDidMount(){
+        axios.post('https://jsonplaceholder.typicode.com/posts', this.state)
+            .then(response => {
+                console.log(response.data)
+            }).catch(error => {
+                console.log(error)
+            })
+    }
+    
+Note: though the url is same but end point is different from that in case of get because of post - http verb used
+
+Also post() method takes two parameters, first: url of end point, second: data that has to be sent,. In our case, this data is stored in state.
+
+
+Library that can be used for form elements : formic
+If using redux, consider using redux-axios
+
+--------------------------------------------------
+USING PUT REQUEST
+
+#TODO
+https://www.digitalocean.com/community/tutorials/react-axios-react
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

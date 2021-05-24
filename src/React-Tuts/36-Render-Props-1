@@ -1,0 +1,56 @@
+MAY 15 - RENDER PROPS PART 1
+
+(Refer to ClickCounterTwo.js)
+
+Things like HOC, Render props are used when there is a need to share common functionality between react components.
+
+WHY NEEDED?
+-----------
+
+import React, { Component } from 'react'
+
+class ClickCounterTwo extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             count: 0
+        }
+    }
+    incrementCount = () => {
+        this.setState(prevState => {
+            return {count: prevState.count +1}
+        })
+    }
+
+/*   
+    Following also works:
+
+    incrementCount = () => {
+        this.setState({
+           count: this.state.count +1
+        })
+    }
+*/
+    render() {
+        const { count } = this.state
+        return (
+            <div>
+                <button onClick={this.incrementCount}>Clicked {count} times</button>
+            </div>
+        )
+    }
+}
+
+export default ClickCounterTwo
+
+
+
+In the above code, suppose client also wants similar functionality to be implemented for different UI elements, for example, hovering over an image, increases count or may be clicking a particular button, pressing a particular key increases count. 
+
+Then if we keep adding increment count functionality to each of these components separately, then we won't be reusing our code but we'll be duplicating code.
+
+T re-use code, one way is to use HOCs and another way is to use render props.
+
+This is why render props are needed.
+

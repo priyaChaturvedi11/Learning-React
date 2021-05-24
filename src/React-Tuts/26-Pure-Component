@@ -1,0 +1,40 @@
+MAY 14 - PURE COMPONENTS
+
+In react, there are two ways to create comonents,
+1. by extending 'Component' class
+2. by extending 'PureComponent' class
+
+Basic difference between a pure component and a regular component is:
+Regular component does not  implement shouldComponenUpdate() method. It always returns true by default.
+pure component implements shouldComponentUpdate() and does a shallow comparision of previous props with current props and a shallow comparision of previous state with current state, and only if it finds any differnce, it will re-render itself.
+So main aim of pure component is to boost the performance. Supppose we have a list of 50 elements now if there is no change in the state or the prop, re-rendering all the 50 items will decrease my performance.
+
+SHALLOW COMPARISION
+
+- for primitive types
+	- a SC b returns true if the value contained in both a and b are same and they both have same data type
+	- e.g.var a = 5
+	      var b = 5
+	      var c = a
+	      console.log(a === b) // true
+	      console.log(a === c) // true
+	- e.g.string 'Vishwas' SC string 'Vishwas' return true 
+
+- for complex types
+	-  a SC b returns true if both reference the exact same object
+	- e.g. var a = [1, 2, 3]
+	       var b = [1, 2, 3]
+	       var c = a
+	       console.log(a === b) // false
+	       console.log(a === c) // true
+	       
+	 - similarly for objects
+	 e.g. 
+	 
+NOTE: Do not add new item in the list or modify the array
+because it will still refernce the same object.
+Hence, return a new object for state when dealing with the pure component. Never mutate state, always retuen a new object that reflects new state.
+	 
+NOTE: It is completely okay to use regular components though. W e can switch to using pure components only when we feel there's a performance hit.
+
+NOTE: It is a good idea to ensure all the children component are also pure to avoid any unexpected behavior.

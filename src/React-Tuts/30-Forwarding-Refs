@@ -1,0 +1,92 @@
+MAY 14 - FORWARDING REFS
+
+CONCEPT
+-------
+Forwarding refs is a technique of forwarding (automating passing) a ref from a component to one of its child components.
+
+It's easy to directly ref a child component through a parent component if our child component is a classs based component. Even in that case we can'tt directly access child's ref's current. BUt when we use React.forward(), it takes a component as parameter. THis component can be an arrow method which when passed to React.forwardRef() receives two parameters, props and refs (which parent component will give it).
+
+So when parent component passes a ref to a child component in bid to pass it to a native html element, the child component, which in below code example happens to be an arrow function, takes that ref as a parameter and through it accesses the native HTML element.
+
+However, instead of using forwardRef() we could have directly passed ref through props to the child component and it'd still give us the same result.
+
+forwardRef() is not so commonly used though but turns out to be useful while working with React libraries.
+
+CODE EXAMPLE
+------------
+
+
+// FRParent.js
+
+import React, { Component } from 'react'
+import FRInput from './FRInput'
+
+class FRParent extends Component {
+    constructor(props) {
+        super(props)
+        this.inputRef = React.createRef()
+    }
+
+    clickHandler = () => {
+        this.inputRef.current.focus()
+    }
+
+    
+    render() {
+        return (
+            <div>
+                <FRInput ref={this.inputRef}/>     
+                <button onClick={this.clickHandler}></button>          
+            </div>
+        )
+    }
+}
+
+export default FRParent
+
+
+// FRInput.js
+
+import React from 'react'
+
+const FRInput = React.forwardRef((props, ref) => {
+    return (
+        <div>
+            <input type="text" ref={ref}/>
+        </div>
+    )    
+})
+
+// function FRInput() {
+//     return (
+//         <div>
+//             <input type="text"/>
+//         </div>
+//     )
+// }
+
+export default FRInput
+
+
+FOLLOWING WILL ALSO WORK (THROUGH PROPS)
+
+import React from 'react'
+
+// const FRInput = React.forwardRef((props, ref) => {
+//     return (
+//         <div>
+//             <input type="text" ref={ref}/>
+//         </div>
+//     )    
+// })
+
+function FRInput({ref}) {
+    return (
+        <div>
+            <input type="text" ref={ref}/>
+        </div>
+    )
+}
+
+export default FRInput
+

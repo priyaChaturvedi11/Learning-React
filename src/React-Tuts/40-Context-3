@@ -1,0 +1,84 @@
+MAY 24 - CONTEXT PART 3
+
+2 other things that we can consider while working with contexts:
+1. having default value in case there's no matching provider
+2. using context type instead of Consumer component.
+
+1) Using default value
+
+Just in case you forget to provide a matching provider, but you are consuming the context value, pass a default value in the createContext() method.
+
+const SomeContext = React.createContext('default value of context')
+
+then in App.js
+ we will need not wrap the parent component inside the provider component 
+ 
+ so instead of  this
+ <SomeContext>
+ 	<ComponentC />
+ </SomeContext>
+ 
+ We can just do following:
+ 
+ <ComponentC />
+ 
+ --------------------------------------------
+ 
+ 2) Using contextType instead of Consumer component
+ 
+ WE can do away with the complex approach of using Consumer component too. In that case, we need to use the contextType property of a class based component
+ 
+ So let's say ComponentE is a class based component the, outside its render() method 
+  ComponentE.contextType = SomeContext
+  
+annd then we can use it in same component's render() method
+
+--------------
+import React, { Component } from 'react'
+import CtCompF from './CtCompF'
+import UserContext from './userContext'
+
+class CtCompE extends Component {
+    render() {
+        return (
+            <div>
+                Component E {this.context}
+                <CtCompF />
+            </div>
+        )
+    }
+}
+CtCompE.contextType = UserContext
+
+export default CtCompE
+
+--------------
+  But for above to be possible, we need to export our SomeContext as default
+  
+NOte: Even though the contextType approach looks  simpler, there are two disadvantages of it.
+1. We cannot use it  with functional components.
+2. We cannot use  it to read multiple  context values.
+
+For reading multiple context values we have to do something like following:
+
+<ThemeContext value="theme">
+	<UserContext value = "user">
+		<Profile theme={theme} user={user}>
+	</UserContext>
+</ThemeContext>
+
+Passing multiple contexts as Props to Profile  component.
+
+
+And consuming multiple context values will be  done as follows:
+
+<ThemeContext.Consumer>
+	{theme => {
+		<UserContext.Consumer>
+			{user => {
+				<Profile theme={theme} user={user} />
+			}}
+		</UserContext.Consumer>
+
+	}}
+</ThemeContext.Consumer>

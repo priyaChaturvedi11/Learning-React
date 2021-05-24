@@ -1,0 +1,16 @@
+MAY 15 - HIGHER ORDER COMPONENTS PART 1
+
+NEED
+----
+
+Suppose I have a button, and I want to display the number of times button is clicked on the screen. 
+Similaryly, there could be a heading which when over hovered over changes number of hovers written in it dynamically.
+
+These are two components with similar functionalities so instead of having all of them separately, we can have a common ancestor with increment functionalty implemented and can lift the state from children to parent, increment it, and  pass it back to the children through props. 
+	        Parent
+          /        ^       \
+	 props     |      props
+	/          |         \
+clickIncrement---state---hoverIncrement
+
+This can be done easily when children share the same parent but if they are not the children of same parent, but probably grand children or something, then lifting up the state is difficult. This is where HOCs come in the spotlight.

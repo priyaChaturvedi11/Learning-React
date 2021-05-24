@@ -1,0 +1,61 @@
+MAY 24 - HTTP
+
+React is used for UI rendering and hence, it is barely aware of server's existence at the  backend and is not involved in the task of fetching or posting data.
+
+Also, react has no concept of http. So to interact with the server and fetch data from there we need an http library. There are many options available for the same, like fetch api, axios etc.
+
+*In this tutorial, Axios has been used. 
+
+-----------             Send data              -------------
+React     |----------------------------------->|Web        |
+Front-end |<-----------------------------------|Server     |
+-----------            Fetch data              -------------
+
+For using axios,
+do---> npm install axios
+check in package.json, if axios has been succesfully added to the react app's dependencies list.
+import axios from 'axios' // where the http calls will be made, this import statement should be written
+
+Once, we have decided which middleware http library we want to use, we would like to know what is the best place to make these http calls. Ideally, such a call should be made when the component has been mounted. And thus, react lifecycle method componentDidMount(), which is called when the component has been successfully mounted in the dom tree and is called once in the lifetime of the component, is the best place to do so.
+
+componentDidMount(){
+	axios.get('url_of_api_endpoint').
+	   then(){
+	   	// ...
+	   }.catch(error){
+	   	// ...
+	   }
+}
+
+OR
+
+componentDidMount(){
+	axios.post('url_of_api_endpoint').
+	   then(){
+	   	// ...
+	   }.catch(error){
+	   	// ...
+	   }
+}
+
+OR
+
+componentDidMount(){
+	axios.put('url_of_api_endpoint').
+	   then(){
+	   	// ...
+	   }.catch(error){
+	   	// ...
+	   }
+}
+
+OR
+
+componentDidMount(){
+	axios.delete('url_of_api_endpoint').
+	   then(){
+	   	// ...
+	   }.catch(error){
+	   	// ...
+	   }
+}

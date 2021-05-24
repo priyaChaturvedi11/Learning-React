@@ -1,0 +1,70 @@
+MAY 14 - REFS WITH CLASS COMPONENTS
+
+
+However, refs cannot be attached to functional component.
+
+Below example shows how we can make a ref from a parent component to a child component, but components have to be class component for refs to be attached to them.
+
+ParentComponent
+
+// FocusInput.js
+
+import React, { Component } from 'react'
+import Input from './Input'
+
+class FocusInput extends Component {
+constructor(props) {
+    super(props)
+
+    this.compRef = React.createRef()
+}
+
+// calls child's focus method
+handleClick = () => {
+    this.compRef.current.focusInput()
+}
+
+    render() {
+        return (
+            <div>
+                <input type="text"/>
+                <Input ref={this.compRef}/>             
+                <button onClick={this.handleClick}>Focus Input</button>   
+            </div>
+        )
+    }
+}
+
+export default FocusInput
+
+
+Child Component
+
+// Input.js
+
+import React, { Component } from 'react'
+
+class RefsDemo extends Component {
+    constructor(props) {
+        super(props)
+        this.myInputRef = React.createRef()
+    }
+    
+    // will be called by parent component
+    focusInput () {
+        this.myInputRef.current.focus()
+    }
+
+    render() {
+        return (
+            <div>
+                Refs Demo
+                <br />
+                <input type="text" ref={this.myInputRef}/>
+            </div>
+        )
+    }
+}
+
+export default RefsDemo
+

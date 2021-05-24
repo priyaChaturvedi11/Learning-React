@@ -1,0 +1,24 @@
+MAY 15 - HOC PART 3
+
+
+While using HOCs keep in mind, when you pass props to the wrapped component, throuh their rendering parent, they are passed to the HOC and not to the wrapped copponent itself.
+
+So inside the HOC, remember to pass all the props using ... (spread) operator
+
+E.g.
+
+
+            render() {
+                return (                
+                    <WrappedComponent 
+                        count={this.state.count} 
+                        incrementCount={this.incrementCount}
+                        {...this.props}
+                    />
+                )
+            }
+            
+
+Also, one can pass parameters while wrapping up the component
+
+export default UpdateMyComponent(OriginalComponent, myParameter)

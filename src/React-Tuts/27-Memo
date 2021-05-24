@@ -1,0 +1,89 @@
+MAY 14 - Memo
+
+CONCEPT:
+PureComponent : Class based component :: Memo : Function Based Component
+
+
+React.memo() was introduced in react 16.6 version so react-dom and react version should be equal to that or above
+
+React.memo() takes as paramemter a component, adds some new things to it and returns an enhanced component - a higher order component
+
+import React, { Component } from 'react'
+import RegComp from './RegComp'
+import PureComp from './PureComp'
+import MemoComp from './MemoComp'
+
+
+class ParentComp extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             name: 'Bella'
+        }
+    }
+    
+    componentDidMount(){
+        setInterval(() => {
+            this.setState({
+                name: 'Bella'
+            })
+        }, 2000);
+    }
+
+
+    render() {
+
+        console.log('*********************** ParentComp ***************************')
+        return (
+            <div>
+                Parent Component
+                <MemoComp name={this.state.name} />
+                {/* <RegComp name={this.state.name}></RegComp>
+                <PureComp name={this.state.name}></PureComp> */}
+            </div>
+        )
+    }
+}
+
+export default ParentComp
+
+
+/*
+Now since parent component is also a pure component, 
+it sees there's no change in state after doing shallow
+comparision and hence, does no re-rendering.
+If parent component doesn't re-render,
+children components will also not re-render.
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react'
+
+function MemoComp({name}) {
+    return (
+        <div>
+            {name}
+        </div>
+    )
+}
+
+export default React.memo(MemoComp)
